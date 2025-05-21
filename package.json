@@ -1,0 +1,17 @@
+{
+  "name": "namaste-react-swiggy",
+  "version": "1.0.0",
+  "description": "Swiggy Restaurant App",
+  "scripts": {
+    "test": "jest"
+  },
+  "author": "Mandip",
+  "license": "ISC",
+  "devDependencies": {
+    "parcel": "^2.15.1"
+  },
+  "dependencies": {
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0"
+  }
+}
