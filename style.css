@@ -5,7 +5,7 @@
 
 .tittle{
     font-size: 25px;
-    padding-left: 320px;
+    padding-left: 400px;
     font-style: italic;
 }
 
@@ -19,6 +19,7 @@
 }
 
 .nav-items > ul{
+    font-size: 20px;
     display: flex;
     list-style-type: none;
 }
@@ -59,6 +60,18 @@
 }
 
 .button-search:hover >button {
+    border-color: rgb(128, 128, 128);
+}
+
+.filter{
+    padding: 0 5px;
+}
+.filter-btn {
+    border-color: transparent;
+}
+
+.filter-btn:hover{
+    cursor: pointer;
     border-color: rgb(128, 128, 128);
 }
 

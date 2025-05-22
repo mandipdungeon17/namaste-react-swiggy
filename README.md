@@ -1,74 +1,73 @@
-# Namaste React Swiggy
+## React Fiber Architecture, Diff & Reconciliation Algorithm, and Virtual DOM
 
-A Swiggy-inspired food ordering web application built with React.js, showcasing key concepts from the "Namaste React" course. This project demonstrates effective use of React components, hooks, state management, and routing to create a modern, responsive, and user-friendly interface.
+### 1. Virtual DOM
 
-## Features
+- **What is it?**  
+  The Virtual DOM is a lightweight JavaScript representation of the actual DOM (Document Object Model).
+- **Why use it?**  
+  Manipulating the real DOM is slow. React uses the Virtual DOM to optimize updates, making UI changes faster and more efficient.
 
-- 🛒 **Browse Restaurants:** Explore a curated list of restaurants and their menus.
-- 🍔 **Menu Details:** View dishes, prices, images, and restaurant details.
-- ➕ **Add to Cart:** Seamlessly add or remove items from the shopping cart.
-- 🛍️ **Cart Management:** View your cart, adjust quantities, and see the total price.
-- 🔍 **Search:** Search for restaurants and dishes by name.
-- 📱 **Responsive Design:** Optimized for both desktop and mobile devices.
-- ⚛️ **Modern React:** Uses functional components, hooks, and React Router.
-
-## Tech Stack
-
-- **Frontend:** React.js, JavaScript, HTML5, CSS3
-- **State Management:** React Context API / useState / useReducer (as per implementation)
-- **Routing:** React Router
-- **Styling:** CSS
-
-## Getting Started
-
-### Prerequisites
-
-- Node.js (>=14.x)
-- npm or yarn
-
-### Installation
-
-```bash
-git clone https://github.com/mandipdungeon17/namaste-react-swiggy.git
-cd namaste-react-swiggy
-npm install
-# or
-yarn install
+**Example:**  
+Suppose your app renders a list of restaurant cards:
+```jsx
+<div>
+  <div>Restaurant 1</div>
+  <div>Restaurant 2</div>
+  <div>Restaurant 3</div>
+</div>
 ```
-
-### Running the App
-
-```bash
-npm start
-# or
-yarn start
-```
-
-Open your browser at [http://localhost:3000](http://localhost:3000) to view the app.
-
-## Folder Structure
-
-```
-namaste-react-swiggy/
-├── public/
-├── src/
-│   ├── components/
-│   ├── pages/
-│   ├── utils/
-│   ├── App.js
-│   └── index.js
-├── package.json
-└── README.md
-```
-
-## Contributing
-
-Pull requests are welcome! For major changes, please open an issue first to discuss what you would like to change.
-
-## License
-
-[MIT](LICENSE)
+React keeps a virtual copy of this structure in memory.
 
 ---
 
-*Inspired by the Swiggy food ordering experience and the Namaste React course by Akshay Saini.*
+### 2. Diff & Reconciliation Algorithm
+
+- **What is it?**  
+  When your app’s state changes (e.g., filtering restaurants), React creates a new Virtual DOM tree.  
+  The **Diff Algorithm** compares the new Virtual DOM with the previous one to find out what actually changed.
+- **How does it work?**  
+  - React checks each node in the tree.
+  - If a node has changed, React marks it for update.
+  - Only the changed parts are updated in the real DOM.
+
+**Example:**  
+You have 7 restaurant cards. After filtering, only 3 cards remain.  
+React’s diff algorithm compares the old (7 cards) and new (3 cards) trees, and updates only the necessary DOM nodes.
+
+---
+
+### 3. React Fiber Architecture
+
+- **What is it?**  
+  React Fiber (introduced in React 16) is the new reconciliation engine in React.  
+  It enables React to break rendering work into small units and spread it out over multiple frames, making the UI more responsive.
+- **Why is it important?**  
+  - Allows React to pause, abort, or restart work as needed.
+  - Improves performance for complex UIs.
+
+**Example:**  
+When you click a filter button:
+- The app goes from showing 7 restaurant cards to 3.
+- React Fiber efficiently updates only the changed cards, not the entire list.
+- This keeps the UI fast and smooth, even for large applications.
+
+---
+
+### Visual Summary
+
+- **res-container**: Parent div holding all restaurant cards.
+- **Before filter:**  
+  `res-container` → 7 ResCards (restaurant cards)
+- **After filter (e.g., Top Rated):**  
+  `res-container` → 3 filtered ResCards
+
+React Fiber and the reconciliation algorithm ensure only the necessary cards are updated in the DOM, using the Virtual DOM as a reference.
+
+---
+
+**In short:**  
+- **Virtual DOM**: Efficient in-memory representation of the UI.
+- **Diff & Reconciliation**: Finds and updates only what changed.
+- **React Fiber**: Makes updates smooth and efficient, even for big apps.
+
+---
