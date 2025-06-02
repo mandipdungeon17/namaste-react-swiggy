@@ -1,12 +1,13 @@
 import { LOGO_URL } from "../utils/constants.js";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 const Header = () => {
   
-  const [login, setLogin] = useState("LogIn");
+  const [login, setLogin] = useState("Login");
   
   const getLogin = () => {
-    login === "LogIn" ? setLogin("LogOut") : setLogin("LogIn");
+    login === "Login" ? setLogin("Logout") : setLogin("Login");
   };
 
   return (
@@ -19,10 +20,10 @@ const Header = () => {
       </div>
       <div className="nav-items">
         <ul>
-          <li className="nav-items-list">Home</li>
-          <li className="nav-items-list">About Us</li>
-          <li className="nav-items-list">Contact Us</li>
-          <li className="nav-items-list">Cart</li>
+          <li className="nav-items-list"><Link to="/">Home</Link></li>
+          <li className="nav-items-list"><Link to="/about">About Us</Link></li>
+          <li className="nav-items-list"><Link to="/contact">Contact Us</Link></li>
+          <li className="nav-items-list"><Link to="cart">Cart</Link></li>
           <li className="login">
             <button type="submit" className="login-btn" onClick={getLogin}>
               {login}

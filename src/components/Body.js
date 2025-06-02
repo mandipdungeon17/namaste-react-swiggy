@@ -3,12 +3,9 @@ import RestaurantCard from "./RestaurantCard";
 import { useEffect, useState, useCallback } from "react";
 import { SWIGGY_API, SWIGGY_API_UPDATE } from "../utils/constants";
 import Shimmers from "./Shimmers";
+import { Link } from "react-router-dom";
 
 // const data = Restaurant?.data.restaurants;
-
-const LAT = "12.9468217";
-const LNG = "77.6813992";
-
 //Both useState and useEffect are hooks whose states once changed, will re-render the component.
 //useState is a Hook that allows you to have state variables in functional components.
 //useEffect is a Hook that lets you perform side effects in functional components.
@@ -173,16 +170,21 @@ const Body = () => {
           <Shimmers />
         ) : (
           filterRestaurant.map((rest, index) => (
-            <RestaurantCard
-              key={rest.info.id + index}
-              //   restName={rest.info.name}
-              //   rating={rest.info.avgRating}
-              //   delivery={rest.info.sla.slaString}
-              //   cuisines={rest.info.cuisines}
-              //   areaName={rest.info.areaName}
-              //   image={rest.info.cloudinaryImageId}
-              restData={rest.info}
-            />
+            <Link
+              to={"/restaurant/"+ rest.info.id}
+              key={rest.info.id + "-" + index}
+            >
+              <RestaurantCard
+                // key={rest.info.id + index}
+                //   restName={rest.info.name}
+                //   rating={rest.info.avgRating}
+                //   delivery={rest.info.sla.slaString}
+                //   cuisines={rest.info.cuisines}
+                //   areaName={rest.info.areaName}
+                //   image={rest.info.cloudinaryImageId}
+                restData={rest.info}
+              />
+            </Link>
           ))
         )}
         {loading && <div>Loading more restaurants...</div>}
