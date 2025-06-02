@@ -85,7 +85,9 @@ React Fiber and the reconciliation algorithm ensure only the necessary cards are
   const [filteredData, setFilteredData] = useState(data);
   // ...existing code...
   ```
-  Here, `filteredData` holds the list of restaurants to display, and `setFilteredData` is used to update this list, for example, after applying a filter.
+  Here, `filteredData` holds the list of restaurants to display, and `setFilteredData` is used to update this list, for example, after applying a filter. This causes React to re-render the component with the new filtered data.
+
+  Never use useState inside loops, conditions, or nested functions. Instead, always use it at the top level of your functional component.
 
 ---
 
@@ -100,6 +102,7 @@ React Fiber and the reconciliation algorithm ensure only the necessary cards are
   - You can control when it runs by providing a dependency array as a second argument.
     - An empty array `[]` means the effect runs only once after the initial render (and cleanup on unmount).
     - An array with variables `[var1, var2]` means the effect runs after the initial render and whenever any of `var1` or `var2` change.
+    - No dependency array (e.g., `useEffect(() => {...})`) means the effect runs after every render.
 - **Example (Conceptual - Data Fetching):**
   ```javascript
   useEffect(() => {
@@ -161,5 +164,160 @@ React Fiber and the reconciliation algorithm ensure only the necessary cards are
   //   </div>
   // );
   ```
+
+---
+---
+
+## 8. React Router DOM
+
+### What is React Router DOM?
+
+React Router DOM is a popular library used for handling routing in React applications. It allows you to create single-page applications (SPAs) with multiple views or pages without reloading the entire page.
+
+---
+
+### Why use React Router DOM?
+
+- **Single Page Application (SPA)**: Enables navigation between different components without a full page refresh.
+- **Dynamic Routing**: Supports dynamic URL parameters, allowing you to render components based on URL data.
+- **Nested Routes**: Allows you to define routes within routes, making your application structure clear and maintainable.
+- **Error Handling**: Provides built-in mechanisms to handle errors gracefully.
+
+---
+
+### Key Components and Hooks:
+
+- **`BrowserRouter`**: Uses HTML5 history API to keep your UI in sync with the URL.
+- **`createBrowserRouter`**: A function to create a router instance with route definitions.
+- **`RouterProvider`**: Provides the router instance to your React application.
+- **`Route`**: Defines a mapping between a URL path and a React component.
+- **`Outlet`**: A placeholder component that renders matched child routes.
+- **`Link`**: Provides declarative navigation between routes without page reload.
+- **`useParams`**: A hook to access URL parameters.
+- **`useRouteError`**: A hook to access error information when a route fails to render.
+
+---
+
+### How React Router DOM is used in this project:
+
+#### 1. Defining Routes (`App.js`):
+
+In your project, routes are defined using `createBrowserRouter`. Each route object specifies:
+
+- `path`: URL path.
+- `element`: Component to render when the path matches.
+- `children`: Nested routes.
+- `errorElement`: Component to render when an error occurs.
+
+```javascript
+// filepath: App.js
+const appRouter = createBrowserRouter([
+  {
+    path: "/",
+    element: <AppLayout />,
+    children: [
+      { path: "/", element: <Body /> },
+      { path: "/about", element: <About /> },
+      { path: "/contact", element: <Contact /> },
+      { path: "/restaurant/:resId", element: <Restaurant /> },
+      { path: "/cart", element: <Cart /> }
+    ],
+    errorElement: <Error />,
+  }
+]);
+```
+
+#### 2. Rendering Router (`App.js`):
+
+The router instance (`appRouter`) is provided to your application using `RouterProvider`:
+
+```javascript
+// filepath: App.js
+const root = ReactDOM.createRoot(document.getElementById("root"));
+root.render(<RouterProvider router={appRouter} />);
+```
+
+#### 3. Layout and Nested Routes (`App.js`):
+
+The `AppLayout` component acts as a layout wrapper, rendering common UI elements (like `Header`) and an `Outlet` component, which renders matched child routes:
+
+```javascript
+// filepath: App.js
+const AppLayout = () => {
+  return (
+    <div className="app">
+      <Header />
+      <Outlet /> {/* renders matched child route components */}
+    </div>
+  );
+};
+```
+
+#### 4. Dynamic Routing (`Restaurant.js`):
+
+Dynamic routes allow you to capture URL parameters. For example, `/restaurant/:resId` captures the restaurant ID from the URL:
+
+```javascript
+// filepath: Restaurant.js
+import { useParams } from "react-router-dom";
+
+const Restaurant = () => {
+  const { resId } = useParams(); // captures the dynamic URL parameter
+
+  useEffect(() => {
+    fetchMenu(resId); // fetch data based on resId
+  }, [resId]);
+
+  return (
+    <div>
+      {/* Render restaurant details */}
+    </div>
+  );
+};
+```
+
+#### 5. Navigation (`Body.js`):
+
+Use the `Link` component to navigate between routes without reloading the page:
+
+```javascript
+// filepath: Body.js
+<Link to={"/restaurant/" + rest.info.id}>
+  <RestaurantCard restData={rest.info} />
+</Link>
+```
+
+#### 6. Error Handling (`Error.js`):
+
+React Router DOM provides the `useRouteError` hook to handle errors gracefully:
+
+```javascript
+// filepath: Error.js
+import { useRouteError } from 'react-router-dom';
+
+const Error = () => {
+  const error = useRouteError();
+
+  return (
+    <div className="error">
+      <h1>Ooops!</h1>
+      <h2>{error.status} : {error.statusText}</h2>
+      <h3 style={{color:"red"}}>{error.error.message}</h3>
+    </div>
+  );
+};
+```
+
+---
+
+### Summary of React Router DOM in this project:
+
+- **Routes**: Defined clearly in `App.js` using `createBrowserRouter`.
+- **Nested Routes**: Managed using the `Outlet` component in `AppLayout`.
+- **Dynamic Routing**: Implemented using URL parameters (`useParams`).
+- **Navigation**: Handled smoothly with `Link` components.
+- **Error Handling**: Managed gracefully using `useRouteError`.
+
+This setup provides a robust, scalable, and user-friendly routing solution for your React application.
 
 ---

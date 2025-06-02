@@ -28,13 +28,19 @@
 .nav-items-list{
     font-size: 18px;
     margin: 10px;
+    padding: 10px;
     display: flex;
+    text-decoration: none;
     /* font-style: italic; */
 }
 
-.nav-items-list {
-    padding: 10px;
-    margin: 10px;
+.nav-items-list > a{
+    text-decoration: none;
+    color: black;
+}
+
+.nav-items-list>a:hover {
+    color: rgb(245, 78, 6);
 }
 
 .login {
@@ -132,7 +138,7 @@
 }
 
 .res-card:hover{
-    border: 1px solid black;
+    border: 1px solid rgb(143, 130, 130);
     cursor: pointer;
 }
 
@@ -140,6 +146,16 @@
     display: flex;
     flex-wrap: wrap;
     padding: 10px 20px;
+}
+
+.res-container > a {
+    text-decoration: none;
+    color: black;
+}
+
+.rest{
+    display: flex;
+    flex-wrap: wrap;
 }
 
 
